@@ -31,30 +31,30 @@ All sensitive data is protected by `.gitignore`:
 
 ## 🚀 Installation
 
-\`\`\`bash
+```bash
 # Clone the repository
 git clone https://github.com/yourusername/instagram-reel-scraper.git
 cd instagram-reel-scraper
 
 # Create virtual environment
 python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\\Scripts\\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
 
 # Install Playwright browsers
 playwright install chromium
-\`\`\`
+```
 
 ## 📖 Usage
 
 ### 1. Scrape Reels with Metrics
 
-\`\`\`bash
+```bash
 source venv/bin/activate
 python reel_saver.py
-\`\`\`
+```
 
 **Workflow:**
 1. **Login** - Uses saved cookies or manual login (first time)
@@ -65,13 +65,13 @@ python reel_saver.py
 
 ### 2. Download Reels (Optional)
 
-\`\`\`bash
+```bash
 # Create a file with reel URLs (one per line)
 echo "https://www.instagram.com/reel/ABC123/" > reels/content.txt
 
 # Run downloader
 python downloader.py
-\`\`\`
+```
 
 Videos will be saved to `downloaded_reels/` folder.
 
@@ -88,11 +88,11 @@ Videos will be saved to `downloaded_reels/` folder.
 | comments | Comment count            |
 
 **Example:**
-\`\`\`csv
+```csv
 channel,link,views,likes,comments
 upsoraduo,https://www.instagram.com/reel/ABC123/,15.2K,1.2K,89
 saved,https://www.instagram.com/reel/XYZ789/,8.5K,650,42
-\`\`\`
+```
 
 ## 🛡️ Anti-Ban Protection
 
@@ -104,6 +104,55 @@ The scraper mimics human behavior to avoid detection:
 - **Gradual Navigation** - Step-by-step navigation (More → Saved → folder)
 - **Smart Timing** - Proper wait times after page loads
 
+## 🔧 Configuration
+
+Edit `reel_saver.py` to customize:
+
+```python
+HEADLESS_MODE = False      # Set to True to hide browser
+MAX_SCROLLS = 50           # Maximum scroll attempts
+FINAL_TIMER = 30           # Observation timer (seconds)
+```
+
+## 📁 Project Structure
+
+```
+instagram-reel-scraper/
+├── reel_saver.py              # Main scraper
+├── downloader.py              # Reel downloader
+├── requirements.txt           # Dependencies
+├── .gitignore                 # Security protection
+├── README.md                  # This file
+├── SECURITY.md                # Security guide
+├── instagram_cookies.json     # 🔒 Session cookies (secured)
+├── reels/
+│   └── reel_metrics.csv       # 🔒 Output data (secured)
+└── downloaded_reels/          # 🔒 Downloaded videos (secured)
+```
+
+## 🎯 How It Works
+
+### Metrics Extraction (100% Accurate)
+
+1. **Views** - Extracted from grid using `aria-label` (literal "view" keyword)
+2. **Likes** - Extracted from meta tags `og:description` (literal "likes" keyword)
+3. **Comments** - Extracted from meta tags `og:description` (literal "comments" keyword)
+
+### Duplicate Detection
+
+- Compares by **post ID** (e.g., `ABC123` from `/reel/ABC123/`)
+- Checks against all existing entries in CSV
+- Shows duplicate count per batch
+- Skips already-scraped reels
+
+### Saved Posts Navigation
+
+1. Click "More" in left sidebar (with hover)
+2. Click "Saved" from menu (with hover)
+3. Auto-search for "content" folder
+4. If not found → fallback to "All Posts"
+5. Start scraping with duplicate detection
+
 ## ⚠️ Important Notes
 
 1. **Cookies Are Sensitive** - Keep `instagram_cookies.json` private (contains session tokens)
@@ -112,6 +161,24 @@ The scraper mimics human behavior to avoid detection:
 4. **Duplicate Detection** - Automatically skips already-scraped reels
 5. **Respect Instagram's ToS** - Use responsibly and respect privacy
 
+## 🐛 Troubleshooting
+
+**"Session expired" error:**
+- Delete `instagram_cookies.json` and run again to re-login
+
+**"No reels found":**
+- Make sure you're on the Reels tab of the profile
+- Check if profile is public or you're following them
+
+**"Could not find More button":**
+- Instagram updated UI - manually navigate to saved posts
+- Press Enter when script prompts
+
+**Facebook page opens:**
+- This means Instagram detected bot behavior
+- Reduce scraping frequency
+- Increase delay values in code
+
 ## 📝 License
 
 MIT License - See LICENSE file for details
@@ -119,6 +186,20 @@ MIT License - See LICENSE file for details
 ## ⚠️ Disclaimer
 
 This tool is for educational purposes only. Users are responsible for complying with Instagram's Terms of Service. The author is not responsible for any misuse or violations.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## 📧 Support
+
+For issues or questions:
+- Open an issue on GitHub
+- Check existing issues for solutions
 
 ---
 
