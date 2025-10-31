@@ -1,6 +1,6 @@
-# Instagram Reel Scraper
+# Instagram Controlling Bot
 
-A powerful Instagram scraper that extracts reels with 100% accurate metrics (views, likes, comments) using human-like behavior to avoid detection.
+A powerful Instagram automation bot that controls Instagram interactions with human-like behavior. Currently features reel scraping with 100% accurate metrics (views, likes, comments), with more automation features planned.
 
 ## 🌟 Features
 
